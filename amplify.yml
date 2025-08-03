@@ -12,7 +12,7 @@ frontend:
     build:
       commands:
         - export PATH="$PWD/flutter/bin:$PATH"
-        - flutter build web --release
+        - flutter build web --release --dart-define=FLUTTER_WEB=$FLUTTER_WEB
   artifacts:
     baseDirectory: build/web
     files:
