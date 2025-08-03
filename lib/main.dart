@@ -116,6 +116,11 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const SizedBox(height: 20),
+            Text(
+              'Build env: ${const String.fromEnvironment('FLUTTER_WEB', defaultValue: 'not set')}',
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            ),
           ],
         ),
       ),
