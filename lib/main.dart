@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'config.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Config.initialize();
   runApp(const MyApp());
 }
 
@@ -118,13 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Build env: ${const String.fromEnvironment('FLUTTER_WEB', defaultValue: 'not set')}',
+              'Build env: ${Config.flutterWeb}',
               style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
-            const SizedBox(height: 20),
             Text(
-              'Build env: ${const String.fromEnvironment('FLUTTER_WEB', defaultValue: 'not set')}',
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+              'Mode: ${Config.isDevelopment ? 'Development (.env)' : 'Production (--dart-define)'}',
+              style: const TextStyle(fontSize: 10, color: Colors.grey),
             ),
           ],
         ),
