@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Flutter Amplify Web Demo'),
     );
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            const Text('Deployed from staging branch'),
+            const Text('Deployed from main branch'),
             const SizedBox(height: 20),
             const Text('Button clicks:'),
             Text(
