@@ -11,11 +11,11 @@ class Config {
     }
   }
 
-  /// Get environment variable from either .env file or --dart-define
+  /// Get FLUTTER_WEB environment variable from either .env file or --dart-define
   static String get flutterWeb {
     // First try --dart-define (used in production/Amplify)
     const dartDefineValue = String.fromEnvironment('FLUTTER_WEB');
-    if (dartDefineValue.isNotEmpty) {
+    if (dartDefineValue.isNotEmpty && dartDefineValue != 'FLUTTER_WEB') {
       return dartDefineValue;
     }
     
@@ -23,16 +23,13 @@ class Config {
     return dotenv.env['FLUTTER_WEB'] ?? 'not set';
   }
 
-  /// Get any environment variable by key
-  static String getEnv(String key, {String defaultValue = 'not set'}) {
-    // First try --dart-define
-    const dartDefineValue = String.fromEnvironment(key);
-    if (dartDefineValue.isNotEmpty) {
+  /// Get specific environment variables (add more as needed)
+  static String get apiBaseUrl {
+    const dartDefineValue = String.fromEnvironment('API_BASE_URL');
+    if (dartDefineValue.isNotEmpty && dartDefineValue != 'API_BASE_URL') {
       return dartDefineValue;
     }
-    
-    // Then try .env file
-    return dotenv.env[key] ?? defaultValue;
+    return dotenv.env['API_BASE_URL'] ?? 'https://api.example.com';
   }
 
   /// Check if we're in development mode (has .env file)
