@@ -1,17 +1,27 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Config {
+  static bool _initialized = false;
+  static bool _envLoaded = false;
+
   static Future<void> initialize() async {
+    if (_initialized) return;
+    
     try {
-      // Try to load .env file (for local development)
-      await dotenv.load(fileName: ".env");
+      // Try to load .env file (works in local development)
+      await dotenv.load();
+      _envLoaded = true;
+      print('✅ Development mode: loaded .env file');
     } catch (e) {
-      // .env file not found or couldn't be loaded (likely in production)
-      print('No .env file found, using --dart-define values');
+      // .env file not found or couldn't be loaded (production)
+      _envLoaded = false;
+      print('📦 Production mode: using --dart-define values');
     }
+    
+    _initialized = true;
   }
 
-  /// Get FLUTTER_WEB environment variable from either .env file or --dart-define
+    /// Get FLUTTER_WEB environment variable from either .env file or --dart-define
   static String get flutterWeb {
     // First try --dart-define (used in production/Amplify)
     const dartDefineValue = String.fromEnvironment('FLUTTER_WEB');
@@ -20,7 +30,11 @@ class Config {
     }
     
     // Then try .env file (used in local development)
-    return dotenv.env['FLUTTER_WEB'] ?? 'not set';
+    if (_envLoaded) {
+      return dotenv.env['FLUTTER_WEB'] ?? 'not set';
+    }
+    
+    return 'not set';
   }
 
   /// Get specific environment variables (add more as needed)
@@ -29,11 +43,14 @@ class Config {
     if (dartDefineValue.isNotEmpty && dartDefineValue != 'API_BASE_URL') {
       return dartDefineValue;
     }
-    return dotenv.env['API_BASE_URL'] ?? 'https://api.example.com';
+    if (_envLoaded) {
+      return dotenv.env['API_BASE_URL'] ?? 'https://api.example.com';
+    }
+    return 'https://api.example.com';
   }
 
   /// Check if we're in development mode (has .env file)
   static bool get isDevelopment {
-    return dotenv.env.isNotEmpty;
+    return _envLoaded;
   }
 }
